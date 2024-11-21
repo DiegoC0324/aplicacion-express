@@ -32,7 +32,7 @@ let db = new sqlite3.Database('./base.sqlite3', (err) => {
 });
 
 //Creamos un endpoint de login que recibe los datos como json
-app.post('/insert', jsonParser, function (req, res) {
+app.post('/to-do', jsonParser, function (req, res) {
     //Imprimimos el contenido del campo todo
     const { todo } = req.body;
    
@@ -74,7 +74,20 @@ app.get('/', function (req, res) {
 
 
 //Creamos un endpoint de login que recibe los datos como json
-app.post('/login', jsonParser, function (req, res) {
+app.get("todos"), (req,res) => {db.all('SELECT * FROM todos ORDER BY created_at DESC',[],
+    (err,rows)=>{
+        if (err){
+            res.status(500).json({
+                error:"error interno del servidor,", 
+                detalles: err.message
+            })
+            return
+         } 
+         res.setHeader('Content-Type', 'application/json');
+         res.status(200).json({ todos: rows });
+    }
+)}
+app.get('/login', jsonParser, function (req, res) {
     //Imprimimos el contenido del body
     console.log(req.body);
 
